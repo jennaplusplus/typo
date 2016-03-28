@@ -16,3 +16,4 @@ Feature: Edit Categories
     And I fill in "category_description" with "Lorem Ipsum again"
     And I press "Save"
     Then I should see "Category was successfully saved."
+      And I should see "Something else"

@@ -15,3 +15,4 @@ Feature: Create Categories
     And I fill in "category_description" with "Lorem Ipsum"
     And I press "Save"
     Then I should see "Category was successfully saved."
+      And I should see "Something"

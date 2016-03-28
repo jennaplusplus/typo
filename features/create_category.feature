@@ -11,3 +11,7 @@ Feature: Create Categories
     Given I am on the admin content page
     When I follow "Categories"
     Then I should see "Categories"
+    When I fill in "category_name" with "Something"
+    And I fill in "category_description" with "Lorem Ipsum"
+    And I press "Save"
+    Then I should see "Category was successfully saved."

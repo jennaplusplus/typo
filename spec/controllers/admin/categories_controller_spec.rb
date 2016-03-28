@@ -13,7 +13,7 @@ describe Admin::CategoriesController do
 
   it "test_new" do
     get :new
-    assert_response :redirect, :action => 'new'
+    expect(subject).to render_template(:new)
   end
 
   it "test_index" do

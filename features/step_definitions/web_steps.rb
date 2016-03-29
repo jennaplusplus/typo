@@ -43,6 +43,34 @@ Given /^the blog is set up$/ do
                 :state => 'active'})
 end
 
+Given /^there is a non-admin user$/ do
+  User.create!({:login => 'rando',
+                :password => 'bbbbbbbb',
+                :email => 'joe@blow.com',
+                :profile_id => 2,
+                :name => 'rando',
+                :state => 'active'})
+end
+
+And /^there is a post not written by the admin$/ do
+  Article.create!({ :title => 'Rando article',
+                    :user_id => 2,
+                    :author => 'rando',
+                    :published => true })
+end
+
+And /^I am logged in as a regular user$/ do
+  visit '/accounts/login'
+  fill_in 'user_login', :with => 'rando'
+  fill_in 'user_password', :with => 'bbbbbbbb'
+  click_button 'Login'
+  if page.respond_to? :should
+    page.should have_content('Login successful')
+  else
+    assert page.has_content?('Login successful')
+  end
+end
+
 And /^I am logged into the admin panel$/ do
   visit '/accounts/login'
   fill_in 'user_login', :with => 'admin'
@@ -250,7 +278,7 @@ Then /^the "([^"]*)" checkbox(?: within (.*))? should not be checked$/ do |label
     end
   end
 end
- 
+
 Then /^(?:|I )should be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).path
   if current_path.respond_to? :should
@@ -264,8 +292,8 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   query = URI.parse(current_url).query
   actual_params = query ? CGI.parse(query) : {}
   expected_params = {}
-  expected_pairs.rows_hash.each_pair{|k,v| expected_params[k] = v.split(',')} 
-  
+  expected_pairs.rows_hash.each_pair{|k,v| expected_params[k] = v.split(',')}
+
   if actual_params.respond_to? :should
     actual_params.should == expected_params
   else

@@ -71,6 +71,19 @@ And /^I am logged in as a regular user$/ do
   end
 end
 
+And /^there are two mergeable posts$/ do
+  Article.create!({ :title => 'Article 1',
+                    :body => 'some text',
+                    :user_id => 1,
+                    :author => 'admin',
+                    :published => true })
+  Article.create!({ :title => 'Article 2',
+                    :body => 'more text',
+                    :user_id => 1,
+                    :author => 'admin',
+                    :published => true })
+end
+
 And /^I am logged into the admin panel$/ do
   visit '/accounts/login'
   fill_in 'user_login', :with => 'admin'
@@ -128,6 +141,13 @@ end
 # TODO: Add support for checkbox, select or option
 # based on naming conventions.
 #
+
+And /^I fill in "([^"]*)" with the ID of the article with the name "([^"]*)"$/ do |field, article_name|
+  article = Article.where(title: article_name).first
+  fill_in(field, :with => article.id)
+end
+
+
 When /^(?:|I )fill in the following:$/ do |fields|
   fields.rows_hash.each do |name, value|
     When %{I fill in "#{name}" with "#{value}"}

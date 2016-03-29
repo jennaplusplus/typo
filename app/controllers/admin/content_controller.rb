@@ -37,6 +37,13 @@ class Admin::ContentController < Admin::BaseController
     new_or_edit
   end
 
+  def merge
+    @article = Article.find(params[:id])
+    # model method to actually merge
+    # controller stuff to make sure it's an authorized merge
+    redirect_to :action => 'edit', id: @article.id
+  end
+
   def destroy
     @record = Article.find(params[:id])
 
@@ -111,11 +118,6 @@ class Admin::ContentController < Admin::BaseController
       return true
     end
     render :text => nil
-  end
-
-  def merge
-    binding.pry
-    puts "found it!"
   end
 
   protected

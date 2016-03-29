@@ -9,7 +9,7 @@ Feature: Merge Articles
       And I am on the all articles page
     Then I should see "Rando article"
     When I follow "Rando article"
-    Then I should see "merge_with"
+    Then I should see "Merge Articles"
 
   Scenario: A regular user cannot merge articles
     Given the blog is set up
@@ -19,4 +19,4 @@ Feature: Merge Articles
       And I am on the all articles page
     Then I should see "Rando article"
     When I follow "Rando article"
-    Then I should not see "merge_with"
+    Then I should not see "Merge Articles"

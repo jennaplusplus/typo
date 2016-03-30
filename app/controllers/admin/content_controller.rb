@@ -39,8 +39,9 @@ class Admin::ContentController < Admin::BaseController
 
   def merge
     @article = Article.find(params[:id])
-    # model method to actually merge
-    # controller stuff to make sure it's an authorized merge
+    if current_user.admin?
+      @article.merge_with(params[:merge_with])
+    end
     redirect_to :action => 'edit', id: @article.id
   end
 

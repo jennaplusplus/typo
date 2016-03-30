@@ -656,8 +656,10 @@ describe Article do
       article = Factory(:article)
       comment = Factory(:comment, :article_id => article.id)
       original_comments_count = article.comments.count
+
       another_article = Factory(:article)
       another_comment = Factory(:comment, :article_id => another_article.id)
+
       article.merge_with(another_article.id)
       expect(original_comments_count).to eq 1
       expect(article.comments.count).to eq 2

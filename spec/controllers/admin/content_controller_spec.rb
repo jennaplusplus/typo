@@ -22,18 +22,40 @@ describe Admin::ContentController do
       }
     end
 
+    let(:admin_user) do
+      Factory(:user, :profile => Factory(:profile_admin, :label => Profile::ADMIN))
+    end
+
+    let(:regular_user) do
+      Factory(:user)
+    end
+
+    before :each do
+      @original_count = Article.count
+    end
+
     it 'should not merge when the user is not an admin' do
-      original_count = Article.count
+      request.session = { :user => regular_user.id }
       post 'merge', article_params
-      expect(Article.count).to eq original_count
+      expect(Article.count).to eq @original_count
     end
 
     it 'merges articles when the user is an admin' do
-      user = Factory(:user, :profile => Factory(:profile_admin, :label => Profile::ADMIN))
-      request.session = { :user => user.id }
-      original_count = Article.count
+      request.session = { :user => admin_user.id }
       post 'merge', article_params
-      expect(Article.count).to eq (original_count - 1)
+      expect(Article.count).to eq (@original_count - 1)
+    end
+
+    it 'renders the edit template' do
+      request.session = { :user => admin_user.id }
+      post 'merge', article_params
+      expect(response).to redirect_to(:action => 'edit', :id => article.id)
+    end
+
+    it 'is successfully redirects' do
+      request.session = { :user => regular_user.id }
+      post 'merge', article_params
+      expect(response.status).to eq 302
     end
   end
 

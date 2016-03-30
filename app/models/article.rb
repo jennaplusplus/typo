@@ -428,6 +428,7 @@ class Article < Content
       other_article.comments.reload
       other_article.destroy
       self.save
+      return self
     end
   end
 

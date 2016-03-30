@@ -422,9 +422,7 @@ class Article < Content
     else
       other_article = Article.find(other_article_id)
       self.body = self.body + "\n\n" + other_article.body
-      other_article.comments.each do |comment|
-        self.comments << comment
-      end
+      self.comments += other_article.comments
       other_article.comments.reload
       other_article.destroy
       self.save
